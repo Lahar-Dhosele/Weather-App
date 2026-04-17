@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <link rel="stylesheet" href="file.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <div class="card">
+        <div class="search">
+            <input type="text" placeholder="Enter Any Place"  spellcheck="false">
+            <button><i class="fa-solid fa-magnifying-glass"></i></button>
+        </div>
+        <div class="weather">
+            <img src="https://cdn-icons-png.flaticon.com/512/6142/6142570.png" class="weather-icon">
+            <h1 class="temp">22°C</h1>
+            <h2 class="city">New York</h2>
+             <div class="details">
+                <div class="col">
+                    <img src="https://cdn-icons-png.flaticon.com/512/219/219816.png" >
+                    <div>
+                        <p class="humidity">50%</p>
+                        <p>Humidity</p>
+                    </div>
+                </div>
+                 <div class="col">
+                    <img src="https://cdn-icons-png.flaticon.com/512/172/172922.png" >
+                    <div>
+                        <p class="wind">15 km/h</p>
+                        <p>Wind Speed</p>
+                    </div>
+                </div>
+             </div>
+        </div>
+    </div>
+   <script>
+    const apiKey = "fc68b420425d2040cfc2971c3c9027b0";
+    const apiUrl = "https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
+
+    const searchBox = document.querySelector(".search input");
+    const searchBtn = document.querySelector(".search button");
+    const weatherIcon = document.querySelector(".weather-icon");
+
+
+    async function checkWeather(city) {
+        const response = await fetch(apiUrl + city + `&appid=${apiKey}`);
+        var data = await response.json();
+
+        console.log(data);
+
+        document.querySelector(".city").innerHTML = data.name;
+        document.querySelector(".temp").innerHTML = Math.round(data.main.temp) + "°C";
+        document.querySelector(".humidity").innerHTML = data.main.humidity + "%";
+        document.querySelector(".wind").innerHTML = data.wind.speed + " km/h";
+        
+       if (data.weather[0].main == "Clouds") {
+           weatherIcon.src = "https://cdn-icons-png.flaticon.com/512/164/164806.png";
+       }
+       else if (data.weather[0].main == "Clear") {
+         weatherIcon.src = "https://cdn-icons-png.flaticon.com/512/3032/3032746.png";
+       }
+        else if (data.weather[0].main == "Rain") {
+         weatherIcon.src = "https://cdn-icons-png.flaticon.com/512/6142/6142570.png";
+       }
+        else if (data.weather[0].main == "Drizzle") {
+         weatherIcon.src = "https://cdn-icons-png.flaticon.com/512/4837/4837678.png";
+       }
+       else if (data.weather[0].main == "Mist") {
+         weatherIcon.src = "https://cdn-icons-png.flaticon.com/512/5497/5497205.png";
+       }
+             else if (data.weather[0].main == "Snow") {
+         weatherIcon.src = "https://cdn-icons-png.flaticon.com/512/9176/9176581.png";
+       }
+      
+    }
+    searchBtn.addEventListener("click", ()=> {
+    checkWeather(searchBox.value);
+});
+    
+   </script> 
+    
+</body>
+</html>
